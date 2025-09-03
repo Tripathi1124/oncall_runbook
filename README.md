@@ -2,6 +2,14 @@
 
 ## Oncall Runbook
 
+## Erp connection
+1. Get the organization Id
+  * Requestor will share the workspaceID in the request.
+  * Use this workspaceID to retrieve the organizationID using the provided curl command:
+  * curl --location 'https://businesshierarchy-prod-http.internal.cleartax.co/api/businessHierarchy?nodeType=WORKSPACE&getSubtree=true&getOrganisationPath=true&nodeId={workspaceID}' \
+--header 'Content-type: application/json'
+2. Share the organizationId obtained from the response above.
+
 ## Service Down
 1. Check service health: `curl https://api.service.com/health`
 2. Check logs: `kubectl logs -f deployment/service-name`
