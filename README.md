@@ -2,15 +2,41 @@
 
 ## Oncall Runbook
 
-## Erp connection
-1. Get the organization Id
-  * Requestor will share the workspaceID in the request.
-  * Use this workspaceID to retrieve the organizationID using the below API:
-```
-curl --location 'https://businesshierarchy-prod-http.internal.cleartax.co/api/businessHierarchy?nodeType=WORKSPACE&getSubtree=true&getOrganisationPath=true&nodeId={workspaceID}' \
---header 'Content-type: application/json'
-```
-2. Share the organizationId obtained from the response above.
+## ERP connection setup
+
+Follow below steps to create new erp connection and share erp isntance id : 
+
+* Get the organization Id
+  * Obtain the workspace ID for the customer.
+  * Use this workspace ID to retrieve the organization ID using the provided curl command:
+
+curl --location 'https://businesshierarchy-prod-http.internal.cleartax.co/api/businessHierarchy?nodeType=WORKSPACE&getSubtree=true&getOrganisationPath=true&nodeId=your_workspace_id' \
+     --header 'Content-type: application/json'
+
+* Create Demo Workspace Configs
+  * Use the prescribed API endpoint to create and configure the ERP connection:
+    * Create ERP Connection: POST /internal/erp_connection
+    * Configure ERP Query Settings (this may require details from the config table or platform documentation)
+    * Set up Time Table Management State as needed for the integration.
+    * Once setup is complete, share the generated ERP instance ID with the requester.
+  * Optionally, you can use the Retool feature to create the ERP connection.
+
+* Migrate from Demo to Production (for Existing Users)
+  * Generate a config snapshot in the Demo workspace using:
+
+curl -X GET "https://your-api-domain.com/internal/erp_connection/generateConfigSnapshot" \
+  -H "x-erp-instance-id: your-demo-erp-instance-id" \
+  -H "x-workspace-id: your-demo-workspace-id"
+
+  * Import this config snapshot into Production using:
+
+curl -X POST "https://your-api-domain.com/internal/erp_connection/importConfigSnapshot" \
+  -H "x-erp-instance-id: your-prod-erp-instance-id" \
+  -H "x-workspace-id: your-prod-workspace-id" \
+  -H "Content-Type: application/json" \
+  -d '@path-to-config-snapshot-file.json'
+
+  * Enable the required artifact and set the project name.
 
 ## Service Down
 1. Check service health: `curl https://api.service.com/health`
