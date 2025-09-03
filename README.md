@@ -7,7 +7,8 @@
   * Requestor will share the workspaceID in the request.
   * Use this workspaceID to retrieve the organizationID using the below API:
 ```curl --location 'https://businesshierarchy-prod-http.internal.cleartax.co/api/businessHierarchy?nodeType=WORKSPACE&getSubtree=true&getOrganisationPath=true&nodeId={workspaceID}' \
---header 'Content-type: application/json'```
+--header 'Content-type: application/json'
+```
 2. Share the organizationId obtained from the response above.
 
 ## Service Down
